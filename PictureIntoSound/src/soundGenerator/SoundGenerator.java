@@ -148,6 +148,10 @@ public final class SoundGenerator implements JMC {
 	}
 
 	public void getPitches() {
+		//COLOR
+		
+		//SHAPE
+		
 	}
 
 	public void getNumberOfNotes() {
