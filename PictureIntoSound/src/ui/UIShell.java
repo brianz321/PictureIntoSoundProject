@@ -162,7 +162,8 @@ public class UIShell extends JPanel implements ActionListener {
 		executeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				sg = new SoundGenerator();				
+				sg = new SoundGenerator();	
+				sg.getPitches();
 			}
 		});
 		// add all of the stuff to the window
