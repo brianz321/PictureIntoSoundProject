@@ -18,6 +18,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import soundGenerator.SoundGenerator;
+
 public class UIShell extends JPanel implements ActionListener {
 
 	JLabel picture;
@@ -33,6 +35,7 @@ public class UIShell extends JPanel implements ActionListener {
 	JComboBox colorMeans;
 	JComboBox directionMeans;
 	JComboBox histogramMeans;
+	SoundGenerator sg;
 	
 	public UIShell() {
 		super(new BorderLayout());
@@ -141,7 +144,7 @@ public class UIShell extends JPanel implements ActionListener {
 		histogramText.setAlignmentX(CENTER_ALIGNMENT);
 
 		// add color combobox selection
-		String[] histogramStrings = { "Key", "Instrument", "Note Length" };
+		String[] histogramStrings = { "Scale", "Instrument", "Note Length" };
 		histogramMeans = new JComboBox(histogramStrings);
 		histogramMeans.setSelectedIndex(0);
 		histogramMeans.setAlignmentX(CENTER_ALIGNMENT);
@@ -159,8 +162,7 @@ public class UIShell extends JPanel implements ActionListener {
 		executeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				String spagett = "spagh";
+				sg = new SoundGenerator();				
 			}
 		});
 		// add all of the stuff to the window
