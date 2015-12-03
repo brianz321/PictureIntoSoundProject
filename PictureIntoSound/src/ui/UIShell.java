@@ -106,7 +106,7 @@ public class UIShell extends JPanel implements ActionListener {
 		colorText.setAlignmentX(CENTER_ALIGNMENT);
 
 		// add color combobox selection
-		String[] colorStrings = { "Scale", "Instrument", "Note Length" };
+		String[] colorStrings = { "Scale", "Instrument" };
 		colorMeans = new JComboBox(colorStrings);
 		colorMeans.setSelectedIndex(0);
 		colorMeans.setAlignmentX(CENTER_ALIGNMENT);
@@ -145,7 +145,7 @@ public class UIShell extends JPanel implements ActionListener {
 		histogramText.setAlignmentX(CENTER_ALIGNMENT);
 
 		// add color combobox selection
-		String[] histogramStrings = { "Scale", "Instrument", "Note Volume" };
+		String[] histogramStrings = { "Scale", "Instrument", "Note Amplitude" };
 		histogramMeans = new JComboBox(histogramStrings);
 		histogramMeans.setSelectedIndex(0);
 		histogramMeans.setAlignmentX(CENTER_ALIGNMENT);
@@ -173,7 +173,8 @@ public class UIShell extends JPanel implements ActionListener {
 				ScanImage si = new ScanImage();
 				try {
 					shapes = si.scan(pictureSelected, traversalDirection);
-					System.out.println(shapes.size());
+					sg.playSound(histogramMeansValue, sizeMeansValue, colorMeansValue, shapes);
+					//System.out.println(shapes.size());
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}

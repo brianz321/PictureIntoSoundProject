@@ -3,9 +3,11 @@ package soundGenerator;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import scanImage.ColorList;
+import scanImage.Shape;
 import jm.JMC;
 import jm.music.data.*;
 import jm.util.Play;
@@ -16,18 +18,84 @@ public final class SoundGenerator implements JMC {
 	public SoundGenerator() {
 	}
 
-	public void playSound() {
+	public void playSound(String histogramMeansValue, String sizeMeansValue, String colorMeansValue, ArrayList<Shape> shapes) {
+		int[] scaleToUse = { 0, 1, 3, 7, 8 };
+		ArrayList<Double> rhythms = new ArrayList<Double>();
+		Part inst = new Part();
+		double[] rhythmArray; 
+		 // COLOR
+		ArrayList<String> colors = new ArrayList<String>();
+		ColorList cl = new ColorList();
+		cl.initColorList();
+		colors = cl.getColorsArray();
+		int numColors = 0;
+		
+		ArrayList<String> allColors = new ArrayList<String>();
+		for(Shape s : shapes){
+	    	allColors.add(s.getColor());
+	    }
+		Collections.sort(allColors);
+		int maxColor = 1;
+		int currentValue =0;
+		String previousColor = "n";
+		String mode = "Red";
+		for(int x=0; x<allColors.size(); x++){
+	    	if(allColors.equals(previousColor)){
+	    		currentValue++;
+	    		if(currentValue>maxColor){
+	    			mode = allColors.get(x);
+	    		}
+	    	}else{
+	    		currentValue = 0;
+	    	}
+	    	previousColor = allColors.get(x);
+	    }
+		int valueToMap = 0;
+		for(int d = 0; d<colors.size(); d++){
+			if(mode.equals(colors.get(d))){
+				valueToMap = d;
+			}
+		}
+		
+		
+		for(int f= 0; f<colors.size(); f++){
+			numColors++;
+		}
+		
+		
+		boolean sizeMeansNoteLength = false;
+		boolean sizeMeansNoteValue = false;
+		
 		Score modeScore = new Score("Picture Melody");
+		int averageSize = 1;
+		
+		if(sizeMeansValue.equals("Instrument")){
+	    for(Shape s : shapes){
+	    	averageSize += s.getSize();
+	    }
+	    averageSize = averageSize/shapes.size();
+	    
+		inst = getInstrument(averageSize,true);
+		}else if(sizeMeansValue.equals("Note Length")){
+			sizeMeansNoteLength = true;
+		}else if(sizeMeansValue.equals("Note Amplitude")){
+			sizeMeansNoteValue = true;
+		}
+		
+		if(colorMeansValue.equals("Scale")){
 
-		// INSTRUMENT
-		Part inst = new Part("Guitar", SGUITAR, 0);
-
-		// SCALE
-		// PITCH
-		// NUMBER OF NOTES
-		// NOTE LENGTH
-		// NOTE AMPLITUDE
-
+			getScale(valueToMap*10/colors.size());
+		}else if(colorMeansValue.equals("Instrument")){
+		inst = getInstrument(valueToMap*30/colors.size(),false);
+		}
+		
+		
+		
+		//"Note Amplitude"
+		//"Note Length"
+		//"Instrument"
+		//"Scale"
+				
 		// create a middle C minim (half note)
 		Note n = new Note(C4, MINIM);
 
@@ -38,12 +106,12 @@ public final class SoundGenerator implements JMC {
 		phr.addNote(n);
 
 		// pack the phrase into a part
-		Part p = new Part();
-		p.addPhrase(phr);
+		//Part p = new Part();
+		inst.addPhrase(phr);
 
 		// pack the part into a score titled 'Bing'
 		Score s = new Score("Bing");
-		s.addPart(p);
+		s.addPart(inst);
 
 		// write the score as a MIDI file to disk
 		// Write.midi(s,"Bing.mid");
@@ -51,8 +119,41 @@ public final class SoundGenerator implements JMC {
 		Play.midi(s);
 	}
 
-	public Part getInstrument(int determiningNumber) {
+	public Part getInstrument(int determiningNumber, boolean bySize) {
 		ArrayList<String> musicalInstruments = new ArrayList<String>();
+		if(bySize){
+			musicalInstruments.add("BASS");
+			musicalInstruments.add("ACOUSTIC_BASS");
+			musicalInstruments.add("ELECTRIC_BASS");
+			musicalInstruments.add("TROMBONE");
+			musicalInstruments.add("BARITONE_SAX");
+			musicalInstruments.add("BASSOON");
+			musicalInstruments.add("TUBA");
+			musicalInstruments.add("BRASS");
+			musicalInstruments.add("VIOLA");
+			musicalInstruments.add("FRENCH_HORN");
+			musicalInstruments.add("CELLO");
+			musicalInstruments.add("HARMONICA");
+			musicalInstruments.add("FIDDLE");
+			musicalInstruments.add("HARPSICHORD");
+			musicalInstruments.add("ACCORDION");
+			musicalInstruments.add("DIST_GUITAR");
+			musicalInstruments.add("ALTO_SAX");	
+			musicalInstruments.add("CHURCH_ORGAN");
+			musicalInstruments.add("EL_GUITAR");
+			musicalInstruments.add("TRUMPET");
+			musicalInstruments.add("VIOLIN");
+			musicalInstruments.add("OBOE");
+			musicalInstruments.add("CLARINET");
+			musicalInstruments.add("CHOIR");
+			musicalInstruments.add("STRINGS");
+			musicalInstruments.add("ACOUSTIC_GUITAR");
+			musicalInstruments.add("ACOUSTIC_GRAND");
+			musicalInstruments.add("FLUTE");
+			musicalInstruments.add("FANTASIA");
+			musicalInstruments.add("PAN_FLUTE");
+			
+		}else{
 		musicalInstruments.add("DIST_GUITAR");
 		musicalInstruments.add("BRASS");
 		musicalInstruments.add("TRUMPET");
@@ -83,7 +184,7 @@ public final class SoundGenerator implements JMC {
 		musicalInstruments.add("FLUTE");
 		musicalInstruments.add("FANTASIA");
 		musicalInstruments.add("PAN_FLUTE");
-
+		}
 		List<Integer> instrumentNumbers = new ArrayList<Integer>();
 
 		for (int x = 0; x < musicalInstruments.size(); x++) {
@@ -155,11 +256,7 @@ public final class SoundGenerator implements JMC {
 	}
 
 	public void getPitches() {
-		// COLOR
-		ArrayList<String> colors = new ArrayList<String>();
-		ColorList cl = new ColorList();
-		cl.initColorList();
-		colors = cl.getColorsArray();
+	
 
 		int[] scaleToUse = getScale(83);
 		ArrayList<String> pitchArray = new ArrayList<String>();

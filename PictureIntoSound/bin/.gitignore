@@ -1,6 +1,3 @@
-/jMusic/
-/output.jpg
-/scanImage/
-/soundGenerator/
-/testPic.jpg
-/ui/
+/soundGenerator
+/ui
+/scanImage
