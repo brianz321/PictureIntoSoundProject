@@ -7,9 +7,14 @@ import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class ScanImage{
 	static ArrayList<Shape> imageShapes = new ArrayList<Shape>();
+	static int shapeSize = 0;
+	static Pixel startingPixel = new Pixel(Integer.MAX_VALUE,Integer.MAX_VALUE);
+	
 	public static void main (String args[]) throws IOException
 	{
 		int width;
@@ -18,10 +23,10 @@ public class ScanImage{
 		File f = null;
 		
 		//read image file	
-		ImageIcon icon = new ImageIcon("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\testPic.jpg");
+		ImageIcon icon = new ImageIcon("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\images\\testPic.jpg");
 		width = icon.getIconWidth();
 		height = icon.getIconHeight();
-		f = new File("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\testPic.jpg");
+		f = new File("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\images\\testPic.jpg");
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		try{	
 			image = ImageIO.read(f);
@@ -40,46 +45,78 @@ public class ScanImage{
 		}
 		
 		//display image
-/*		JFrame frame = new JFrame();
-		ImageIcon icon = new ImageIcon("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\output.jpg");
-		JLabel label  = new JLabel(icon);
+		JFrame frame = new JFrame();
+		ImageIcon icon2 = new ImageIcon("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\output.jpg");
+		JLabel label  = new JLabel(icon2);
 		frame.add(label);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
-*/		
+	
 		//begin scanning image
 		int[][] imageCheck = new int[height][width];//array for checked pixels
-		int[][] pixelColor = new int[height][width];//array for pixels color value
+		String[][] pixelColor = new String[height][width];//array for pixels color value
 		initializeImageArray(imageCheck);
-		initializeColorArray(pixelColor, image);//get colors of each pixel, combine them together
-		//search from left to right and top to bottom, mark pixel with 1. search neighbors and mark same colored pixels with 1 if not already 2 or 1 (recursion?).
-		//after all 1s are found create Shape, define color, size, starting pixel, shape
-		//start search again with next pixel marked 0, *make sure to apply color and size thresholds* 
-		
-		//Shape s = new Shape(0,"","");
-		//imageShapes.add(s);
+		initializeColorArray(pixelColor, image);
+		//user input to determine where search starts go here, startX and startY and looping depends on input
+		int startX = 0; int startY = 0;
+		for(int i = 0; i < imageCheck.length; i++){//y, height, rows
+			for(int j = 0; j < imageCheck[0].length; j++){//x, width, columns
+				scanImage(imageCheck, pixelColor, startX, startY/*, 5th parameter for user search traversal*/);//start search again with next pixel marked 0, *make sure to apply color and size thresholds*
+					for(int i2 = 0; i2 < imageCheck.length; i2++){//y, height, rows
+						for(int j2 = 0; j2 < imageCheck[0].length; j2++){//x, width, columns
+							System.out.println(Arrays.toString(imageCheck[i]));
+						}	
+					}
+			}
+		//System.out.println(Arrays.toString(array[i]));	
+		}
 	}
 	
 	static void initializeImageArray(int[][] array){
-		for(int i = 0; i < array.length; i++){//height, rows
-			for(int j = 0; j < array[0].length; j++){//width, columns
+		for(int i = 0; i < array.length; i++){//y, height, rows
+			for(int j = 0; j < array[0].length; j++){//x, width, columns
 				array[i][j] = 0;
 			}
-		System.out.println(Arrays.toString(array[i]));	
+		//System.out.println(Arrays.toString(array[i]));	
 		}
 	}
-	static void initializeColorArray(int[][] array, BufferedImage image){
-		for(int i = 0; i < array.length; i++){//height, rows
-			for(int j = 0; j < array[0].length; j++){//width, columns
+	static void initializeColorArray(String[][] color, BufferedImage image){
+		for(int i = 0; i < color.length; i++){//y, height, rows
+			for(int j = 0; j < color[0].length; j++){//x, width, columns
 				  int pixel = image.getRGB(j, i);	
 				  int red = (pixel >> 16) & 0xff;
 				  int green = (pixel >> 8) & 0xff;
 				  int blue = (pixel) & 0xff;
-				  int color = red + green + blue;
-				  array[i][j] = color;
+				  ColorList pixelColor = new ColorList();
+				  color[i][j] = pixelColor.getColorNameFromRgb(red, green, blue);
 			}
-		System.out.println(Arrays.toString(array[i]));	
+		System.out.println(Arrays.toString(color[i]));	
+		}
+	}
+	static void scanImage(int[][] array, String[][] color, int x, int y){
+		if(array[x][y] != 0 || x == array.length || y == array[x].length) {return;}
+		if(shapeSize == 0) {startingPixel.setX(x); startingPixel.setY(y);}
+		shapeSize++;
+		array[x][y] = 1;
+		scanImage(array, color, x+1,y);//search from left to right and top to bottom, mark pixel with 1.
+		scanImage(array, color, x,y+1);//search neighbors and mark same colored pixels with 1 if not already 2 or 1 (recursion?). 
+		
+		if(startingPixel.getX() == x && startingPixel.getY() == y){
+		Shape s = new Shape(shapeSize, color[x][y], "Square", startingPixel);//after all 1s are found create Shape, define color, size, starting pixel, shape
+		imageShapes.add(s);
+		convertOneToTwo(array, x, y);
+		shapeSize = 0;
+		}
+	}
+	
+	static void convertOneToTwo(int[][] array, int x, int y){
+		for(int i = x; i < array.length; i++){
+			for(int j = y; j < array[0].length; j++){
+				if(array[i][j] == 1){
+					array[i][j] = 2;
+				}
+			}
 		}
 	}
 }
