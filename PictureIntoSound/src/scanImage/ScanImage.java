@@ -1,4 +1,5 @@
 package scanImage;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.File;
@@ -19,7 +20,7 @@ public class ScanImage{
 	{
 		int width;
 		int height;
-		BufferedImage image = null;//original image
+		BufferedImage image = null;
 		File f = null;
 		
 		//read image file	
@@ -54,8 +55,8 @@ public class ScanImage{
 		frame.setVisible(true);
 	
 		//begin scanning image
-		int[][] imageCheck = new int[height][width];//array for checked pixels
-		String[][] pixelColor = new String[height][width];//array for pixels color value
+		int[][] imageCheck = new int[height][width];
+		String[][] pixelColor = new String[height][width];
 		initializeImageArray(imageCheck);
 		initializeColorArray(pixelColor, image);
 		//user input to determine where search starts go here, startX and startY and looping depends on input
@@ -65,7 +66,9 @@ public class ScanImage{
 			}	
 		}
 	}
-	
+	/*
+	 * initializes array used to verify each pixel gets checked
+	 */
 	static void initializeImageArray(int[][] array){
 		for(int i = 0; i < array.length; i++){//y, height, rows
 			for(int j = 0; j < array[0].length; j++){//x, width, columns
@@ -74,6 +77,9 @@ public class ScanImage{
 		//System.out.println(Arrays.toString(array[i]));	
 		}
 	}
+	/*
+	 * loads array used to store String value of the color at each pixel
+	 */
 	static void initializeColorArray(String[][] color, BufferedImage image){
 		for(int i = 0; i < color.length; i++){//y, height, rows
 			for(int j = 0; j < color[0].length; j++){//x, width, columns
@@ -87,12 +93,17 @@ public class ScanImage{
 		System.out.println(Arrays.toString(color[i]));	
 		}
 	}
+	/*
+	 * goes through pixel by pixel and groups together neighboring pixels that share the same color.
+	 * initial pixel value, color, size of created shape, and the kind of shape that is formed are saved
+	 */
 	static void scanImage(int[][] array, String[][] color, int x, int y){
 		if(array[x][y] != 0) {return;}
 		if(shapeSize == 0) {startingPixel.setX(x); startingPixel.setY(y);}
 		else if(color[x][y] != color[startingPixel.getX()][startingPixel.getY()]) {return;}
 		shapeSize++;
 		array[x][y] = 1;
+		
 		if(x == array.length-1){return;}
 		else{scanImage(array, color, x+1,y);}//search from left to right and top to bottom, mark pixel with 1.	
 		if(y == array[x].length-1){return;}
