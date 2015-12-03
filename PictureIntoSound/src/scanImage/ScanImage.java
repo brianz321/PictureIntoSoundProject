@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 public class ScanImage{
 	static ArrayList<Shape> imageShapes = new ArrayList<Shape>();
 	static int shapeSize = 0;
-	static Pixel startingPixel = new Pixel(Integer.MAX_VALUE,Integer.MAX_VALUE);
+	static Pixel startingPixel = new Pixel(0,0);
 	
 	public static void main (String args[]) throws IOException
 	{
@@ -23,10 +23,10 @@ public class ScanImage{
 		File f = null;
 		
 		//read image file	
-		ImageIcon icon = new ImageIcon("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\images\\testPic.jpg");
+		ImageIcon icon = new ImageIcon("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\images\\testPic2.jpg");
 		width = icon.getIconWidth();
 		height = icon.getIconHeight();
-		f = new File("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\images\\testPic.jpg");
+		f = new File("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\images\\testPic2.jpg");
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		try{	
 			image = ImageIO.read(f);
@@ -37,7 +37,7 @@ public class ScanImage{
 		
 		//write image
 		try{
-			f = new File("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\output.jpg");
+			f = new File("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\output2.jpg");
 			ImageIO.write(image, "jpg", f);
 			System.out.println("Writing complete.");
 		}catch(IOException e){
@@ -46,7 +46,7 @@ public class ScanImage{
 		
 		//display image
 		JFrame frame = new JFrame();
-		ImageIcon icon2 = new ImageIcon("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\output.jpg");
+		ImageIcon icon2 = new ImageIcon("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\output2.jpg");
 		JLabel label  = new JLabel(icon2);
 		frame.add(label);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,17 +59,10 @@ public class ScanImage{
 		initializeImageArray(imageCheck);
 		initializeColorArray(pixelColor, image);
 		//user input to determine where search starts go here, startX and startY and looping depends on input
-		int startX = 0; int startY = 0;
-		for(int i = 0; i < imageCheck.length; i++){//y, height, rows
-			for(int j = 0; j < imageCheck[0].length; j++){//x, width, columns
-				scanImage(imageCheck, pixelColor, startX, startY/*, 5th parameter for user search traversal*/);//start search again with next pixel marked 0, *make sure to apply color and size thresholds*
-					for(int i2 = 0; i2 < imageCheck.length; i2++){//y, height, rows
-						for(int j2 = 0; j2 < imageCheck[0].length; j2++){//x, width, columns
-							System.out.println(Arrays.toString(imageCheck[i]));
-						}	
-					}
-			}
-		//System.out.println(Arrays.toString(array[i]));	
+		for(int i = 0; i < imageCheck.length; i++){//height, rows
+			for(int j = 0; j < imageCheck[0].length; j++){//width, columns
+				scanImage(imageCheck, pixelColor, j, i/*, 5th parameter for user search traversal*/);//start search again with next pixel marked 0, *make sure to apply color and size thresholds*
+			}	
 		}
 	}
 	
@@ -95,14 +88,17 @@ public class ScanImage{
 		}
 	}
 	static void scanImage(int[][] array, String[][] color, int x, int y){
-		if(array[x][y] != 0 || x == array.length || y == array[x].length) {return;}
+		if(array[x][y] != 0) {return;}
 		if(shapeSize == 0) {startingPixel.setX(x); startingPixel.setY(y);}
+		else if(color[x][y] != color[startingPixel.getX()][startingPixel.getY()]) {return;}
 		shapeSize++;
 		array[x][y] = 1;
-		scanImage(array, color, x+1,y);//search from left to right and top to bottom, mark pixel with 1.
-		scanImage(array, color, x,y+1);//search neighbors and mark same colored pixels with 1 if not already 2 or 1 (recursion?). 
+		if(x == array.length-1){return;}
+		else{scanImage(array, color, x+1,y);}//search from left to right and top to bottom, mark pixel with 1.	
+		if(y == array[x].length-1){return;}
+		else{scanImage(array, color, x,y+1);}//search neighbors and mark same colored pixels with 1 if not already 2 or 1 (recursion?). 	
 		
-		if(startingPixel.getX() == x && startingPixel.getY() == y){
+		if(startingPixel.getX() == x && startingPixel.getY() == y /*&& shapeSize > 2*/){
 		Shape s = new Shape(shapeSize, color[x][y], "Square", startingPixel);//after all 1s are found create Shape, define color, size, starting pixel, shape
 		imageShapes.add(s);
 		convertOneToTwo(array, x, y);
