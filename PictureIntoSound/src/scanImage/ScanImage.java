@@ -10,12 +10,13 @@ import javax.swing.ImageIcon;
 
 public class ScanImage{
 	static ArrayList<Shape> imageShapes = new ArrayList<Shape>();
-	static int shapeSize = 0;
-	static Pixel startingPixel = new Pixel(0,0);
-	static String directionString = "Left-Right";
+	static int shapeSize;
+	static Pixel startingPixel;
 	
 	public ArrayList<Shape> scan(String pictureSelected, String traversalDirection) throws IOException
 	{
+		shapeSize = 0;
+		startingPixel = new Pixel(0,0);
 		int width;
 		int height;
 		BufferedImage image = null;
@@ -53,37 +54,39 @@ public class ScanImage{
 */		
 		//begin scanning image
 		int[][] imageCheck = new int[height][width];
+		int[][] histogramValues = new int[height][width];
 		String[][] pixelColor = new String[height][width];
 		initializeImageArray(imageCheck);
-		initializeColorArray(pixelColor, image);
-		if(directionString == "Left-Right"){
+		initializeColorArray(pixelColor, histogramValues, image);
+		if(traversalDirection == "Left-Right"){
 			for(int i = 0; i < imageCheck.length; i++){//height, rows
 				for(int j = 0; j < imageCheck[0].length; j++){//width, columns
-					scanImage(imageCheck, pixelColor, j, i);
+					scanImage(imageCheck, pixelColor, j, i, traversalDirection);
 				}	
 			}
 		}
-		if(directionString == "Right-Left"){
+		if(traversalDirection == "Right-Left"){
 			for(int i = 0; i < imageCheck.length; i++){//height, rows
 				for(int j = imageCheck[0].length-1; j > 0; j--){//width, columns
-					scanImage(imageCheck, pixelColor, j, i);
+					scanImage(imageCheck, pixelColor, j, i, traversalDirection);
 				}	
 			}
 		}
-		if(directionString == "Top-Bottom"){
+		if(traversalDirection == "Top-Bottom"){
 			for(int j = 0; j < imageCheck[0].length; j++){//width, columns
 				for(int i = 0; i < imageCheck.length; i++){//height, rows
-					scanImage(imageCheck, pixelColor, j, i);
+					scanImage(imageCheck, pixelColor, j, i, traversalDirection);
 				}	
 			}
 		}
-		if(directionString == "Bottom-Top"){
+		if(traversalDirection == "Bottom-Top"){
 			for(int j = 0; j < imageCheck[0].length; j++){//width, columns
 				for(int i = imageCheck.length-1; i > 0; i--){//height, rows
-					scanImage(imageCheck, pixelColor, j, i);
+					scanImage(imageCheck, pixelColor, j, i, traversalDirection);
 				}	
 			}
 		}
+		Histogram hist = createHistogram(histogramValues);
 		return imageShapes;
 	}
 	/*
@@ -100,14 +103,16 @@ public class ScanImage{
 	/*
 	 * loads array used to store String value of the color at each pixel
 	 */
-	static void initializeColorArray(String[][] color, BufferedImage image){
+	static void initializeColorArray(String[][] color, int[][] histogram, BufferedImage image){
 		for(int i = 0; i < color.length; i++){//y, height, rows
 			for(int j = 0; j < color[0].length; j++){//x, width, columns
 				  int pixel = image.getRGB(j, i);	
 				  int red = (pixel >> 16) & 0xff;
 				  int green = (pixel >> 8) & 0xff;
 				  int blue = (pixel) & 0xff;
+				  int colorTotal = (red + green + blue)/3;
 				  ColorList pixelColor = new ColorList();
+				  histogram[i][j] = colorTotal;
 				  color[i][j] = pixelColor.getColorNameFromRgb(red, green, blue);
 			}
 	//	System.out.println(Arrays.toString(color[i]));	
@@ -117,7 +122,7 @@ public class ScanImage{
 	 * goes through pixel by pixel and groups together neighboring pixels that share the same color.
 	 * initial pixel value, color, size of created shape, and the kind of shape that is formed are saved
 	 */
-	static void scanImage(int[][] array, String[][] color, int x, int y){
+	static void scanImage(int[][] array, String[][] color, int x, int y, String directionString){
 		if(array[x][y] != 0) {return;}
 		if(shapeSize == 0) {startingPixel.setX(x); startingPixel.setY(y);}
 		else if(color[x][y] != color[startingPixel.getX()][startingPixel.getY()]) {return;}
@@ -126,27 +131,27 @@ public class ScanImage{
 		
 		if(directionString == "Left-Right"){
 			if(x == array.length-1){return;}
-			else{scanImage(array, color, x+1,y);}//search from left to right	
+			else{scanImage(array, color, x+1,y, directionString);}//search from left to right	
 			if(y == array[x].length-1){return;}
-			else{scanImage(array, color, x,y+1);} 	
+			else{scanImage(array, color, x,y+1, directionString);} 	
 		}
 		if(directionString == "Right-Left"){
-			if(x == array.length-1){return;}
-			else{scanImage(array, color, x-1,y);}//search from right to left	
+			if(x == 0){return;}
+			else{scanImage(array, color, x-1,y, directionString);}//search from right to left	
 			if(y == array[x].length-1){return;}
-			else{scanImage(array, color, x,y+1);} 	
+			else{scanImage(array, color, x,y+1, directionString);} 	
 		}
 		if(directionString == "Top-Bottom"){
 			if(y == array[x].length-1){return;}
-			else{scanImage(array, color, x,y+1);}//search from top to bottom
+			else{scanImage(array, color, x,y+1, directionString);}//search from top to bottom
 			if(x == array.length-1){return;}
-			else{scanImage(array, color, x+1,y);}		
+			else{scanImage(array, color, x+1,y, directionString);}		
 		}
 		if(directionString == "Bottom-Top"){
-			if(y == array[x].length-1){return;}
-			else{scanImage(array, color, x,y-1);}//search from bottom to top 
+			if(y == 0){return;}
+			else{scanImage(array, color, x,y-1, directionString);}//search from bottom to top 
 			if(x == array.length-1){return;}
-			else{scanImage(array, color, x+1,y);}
+			else{scanImage(array, color, x+1,y, directionString);}
 		}
 		
 		if(startingPixel.getX() == x && startingPixel.getY() == y /*&& shapeSize > 2*/){
@@ -157,7 +162,18 @@ public class ScanImage{
 		}
 	}
 	
-	static void convertOneToTwo(int[][] array, int x, int y){
+	public Histogram createHistogram(int[][] histogram){
+		Histogram hist = new Histogram();
+		int[] histValues = new int[256];
+		for(int i = 0; i < histogram.length; i++){
+			for(int j = 0; j < histogram[0].length; j++){
+				histValues[histogram[i][j]]++;
+			}
+		}
+		hist.setHistogram(histValues);
+		return hist;
+	}
+	public static void convertOneToTwo(int[][] array, int x, int y){
 		for(int i = x; i < array.length; i++){
 			for(int j = y; j < array[0].length; j++){
 				if(array[i][j] == 1){
