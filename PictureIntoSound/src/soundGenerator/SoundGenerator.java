@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import scanImage.ColorList;
 import jm.JMC;
 import jm.music.data.*;
@@ -180,9 +181,6 @@ public final class SoundGenerator implements JMC {
 				}
 			}
 		}
-		
-		
-		
 		System.out.println(useThisPitchArray.toString());
 
 		// SHAPE
