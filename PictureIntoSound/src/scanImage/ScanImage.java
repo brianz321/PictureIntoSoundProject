@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.File;
 import java.io.IOException;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
@@ -11,10 +12,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
 public class ScanImage{
 	static ArrayList<Shape> imageShapes = new ArrayList<Shape>();
 	static int shapeSize = 0;
 	static Pixel startingPixel = new Pixel(0,0);
+	static String directionString = "Left-Right";
 	
 	public static void main (String args[]) throws IOException
 	{
@@ -29,6 +34,11 @@ public class ScanImage{
 		height = icon.getIconHeight();
 		f = new File("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\images\\testPic2.jpg");
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage gray = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);//
+		Graphics g = image.getGraphics();//
+		g.drawImage(image, 0, 0, null);//
+		g.dispose();//
+		
 		try{	
 			image = ImageIO.read(f);
 			System.out.println("Reading complete.");	
@@ -59,11 +69,33 @@ public class ScanImage{
 		String[][] pixelColor = new String[height][width];
 		initializeImageArray(imageCheck);
 		initializeColorArray(pixelColor, image);
-		//user input to determine where search starts go here, startX and startY and looping depends on input
-		for(int i = 0; i < imageCheck.length; i++){//height, rows
+		if(directionString == "Left-Right"){
+			for(int i = 0; i < imageCheck.length; i++){//height, rows
+				for(int j = 0; j < imageCheck[0].length; j++){//width, columns
+					scanImage(imageCheck, pixelColor, j, i);
+				}	
+			}
+		}
+		if(directionString == "Right-Left"){
+			for(int i = 0; i < imageCheck.length; i++){//height, rows
+				for(int j = imageCheck[0].length-1; j > 0; j--){//width, columns
+					scanImage(imageCheck, pixelColor, j, i);
+				}	
+			}
+		}
+		if(directionString == "Top-Bottom"){
 			for(int j = 0; j < imageCheck[0].length; j++){//width, columns
-				scanImage(imageCheck, pixelColor, j, i/*, 5th parameter for user search traversal*/);//start search again with next pixel marked 0, *make sure to apply color and size thresholds*
-			}	
+				for(int i = 0; i < imageCheck.length; i++){//height, rows
+					scanImage(imageCheck, pixelColor, j, i);
+				}	
+			}
+		}
+		if(directionString == "Bottom-Top"){
+			for(int j = 0; j < imageCheck[0].length; j++){//width, columns
+				for(int i = imageCheck.length-1; i > 0; i--){//height, rows
+					scanImage(imageCheck, pixelColor, j, i);
+				}	
+			}
 		}
 	}
 	/*
@@ -104,10 +136,30 @@ public class ScanImage{
 		shapeSize++;
 		array[x][y] = 1;
 		
-		if(x == array.length-1){return;}
-		else{scanImage(array, color, x+1,y);}//search from left to right and top to bottom, mark pixel with 1.	
-		if(y == array[x].length-1){return;}
-		else{scanImage(array, color, x,y+1);}//search neighbors and mark same colored pixels with 1 if not already 2 or 1 (recursion?). 	
+		if(directionString == "Left-Right"){
+			if(x == array.length-1){return;}
+			else{scanImage(array, color, x+1,y);}//search from left to right	
+			if(y == array[x].length-1){return;}
+			else{scanImage(array, color, x,y+1);} 	
+		}
+		if(directionString == "Right-Left"){
+			if(x == array.length-1){return;}
+			else{scanImage(array, color, x-1,y);}//search from right to left	
+			if(y == array[x].length-1){return;}
+			else{scanImage(array, color, x,y+1);} 	
+		}
+		if(directionString == "Top-Bottom"){
+			if(y == array[x].length-1){return;}
+			else{scanImage(array, color, x,y+1);}//search from top to bottom
+			if(x == array.length-1){return;}
+			else{scanImage(array, color, x+1,y);}		
+		}
+		if(directionString == "Bottom-Top"){
+			if(y == array[x].length-1){return;}
+			else{scanImage(array, color, x,y-1);}//search from bottom to top 
+			if(x == array.length-1){return;}
+			else{scanImage(array, color, x+1,y);}
+		}
 		
 		if(startingPixel.getX() == x && startingPixel.getY() == y /*&& shapeSize > 2*/){
 		Shape s = new Shape(shapeSize, color[x][y], "Square", startingPixel);//after all 1s are found create Shape, define color, size, starting pixel, shape
