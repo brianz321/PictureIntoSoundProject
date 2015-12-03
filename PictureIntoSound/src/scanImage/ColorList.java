@@ -20,7 +20,7 @@ public class ColorList{
         colorList.add(new ColorName("DarkGreen", 0x00, 0x64, 0x00));
         colorList.add(new ColorName("DarkKhaki", 0xBD, 0xB7, 0x6B));
         colorList.add(new ColorName("DarkMagenta", 0x8B, 0x00, 0x8B));
-       colorList.add(new ColorName("DarkOrange", 0xFF, 0x8C, 0x00));
+        colorList.add(new ColorName("DarkOrange", 0xFF, 0x8C, 0x00));
         colorList.add(new ColorName("DarkRed", 0x8B, 0x00, 0x00));
         colorList.add(new ColorName("DarkSalmon", 0xE9, 0x96, 0x7A));
         colorList.add(new ColorName("DarkTurquoise", 0x00, 0xCE, 0xD1));
@@ -81,11 +81,7 @@ public class ColorList{
             }
         }
 
-        if (closestMatch != null) {
-            return closestMatch.getName();
-        } else {
-            return "No matched color name.";
-        }
+        return closestMatch.getName();
     }
 
     public String getColorNameFromHex(int hexColor) {
@@ -105,12 +101,7 @@ public class ColorList{
                 color.getBlue());
     }
 
-    /**
-     * SubClass of ColorUtils. In order to lookup color name
-     * 
-     * @author Xiaoxiao Li
-     * 
-     */
+ 
     public class ColorName {
         public int r, g, b;
         public String name;
