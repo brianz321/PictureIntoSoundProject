@@ -200,3 +200,6 @@ PictureIntoSound/.classpath
 .metadata/.plugins/org.eclipse.wst.jsdt.core/libraries/xhr.js
 .metadata/.plugins/org.eclipse.wst.jsdt.core/variablesAndContainers.dat
 PictureIntoSound/bin/.gitignore
+.metadata/.mylyn/.tasks.xml.zip
+.metadata/.plugins/org.eclipse.debug.ui/launchConfigurationHistory.xml
+PictureIntoSound/.classpath
