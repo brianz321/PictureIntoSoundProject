@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -18,6 +20,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import scanImage.ScanImage;
+import scanImage.Shape;
 import soundGenerator.SoundGenerator;
 
 public class UIShell extends JPanel implements ActionListener {
@@ -36,7 +40,7 @@ public class UIShell extends JPanel implements ActionListener {
 	JComboBox directionMeans;
 	JComboBox histogramMeans;
 	SoundGenerator sg;
-	
+
 	public UIShell() {
 		super(new BorderLayout());
 		FlowLayout flowLayout = new FlowLayout();
@@ -64,25 +68,20 @@ public class UIShell extends JPanel implements ActionListener {
 		picture.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		picture.setPreferredSize(new Dimension(300, 300));
 		picture.setAlignmentX(CENTER_ALIGNMENT);
-
-		// add shape TextLabel
-		shapeText = new JLabel("What should shape mean?");
-		shapeText.setFont(new Font("Verdana", 1, 20));
-		shapeText.setAlignmentX(CENTER_ALIGNMENT);
-
-		// add shape combobox selection
-		String[] shapeStrings = { "Instrument", "Scale", "Note Length" };
-		shapeMeans = new JComboBox(shapeStrings);
-		shapeMeans.setSelectedIndex(0);
-		shapeMeans.setAlignmentX(CENTER_ALIGNMENT);
-		shapeMeans.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				String spagett = "spagh";
-			}
-		});
-
+		/*
+		 * // add shape TextLabel shapeText = new
+		 * JLabel("What should shape mean?"); shapeText.setFont(new
+		 * Font("Verdana", 1, 20)); shapeText.setAlignmentX(CENTER_ALIGNMENT);
+		 * 
+		 * // add shape combobox selection String[] shapeStrings = {
+		 * "Instrument", "Scale", "Note Length" }; shapeMeans = new
+		 * JComboBox(shapeStrings); shapeMeans.setSelectedIndex(0);
+		 * shapeMeans.setAlignmentX(CENTER_ALIGNMENT);
+		 * shapeMeans.addActionListener(new ActionListener() {
+		 * 
+		 * @Override public void actionPerformed(ActionEvent e) { // TODO
+		 * Auto-generated method stub String spagett = "spagh"; } });
+		 */
 		// add size TextLabel
 		sizeText = new JLabel("What should size mean?");
 		sizeText.setFont(new Font("Verdana", 1, 20));
@@ -120,12 +119,14 @@ public class UIShell extends JPanel implements ActionListener {
 		});
 
 		// add direction TextLabel
-		directionText = new JLabel("What direction would you like to traverse the image?");
+		directionText = new JLabel(
+				"What direction would you like to traverse the image?");
 		directionText.setFont(new Font("Verdana", 1, 20));
 		directionText.setAlignmentX(CENTER_ALIGNMENT);
 
 		// add color combobox selection
-		String[] directionStrings = { "Top-Bottom", "Bottom-Top", "Left-Right", "Right-Left" };
+		String[] directionStrings = { "Top-Bottom", "Bottom-Top", "Left-Right",
+				"Right-Left" };
 		directionMeans = new JComboBox(directionStrings);
 		directionMeans.setSelectedIndex(0);
 		directionMeans.setAlignmentX(CENTER_ALIGNMENT);
@@ -137,14 +138,14 @@ public class UIShell extends JPanel implements ActionListener {
 			}
 		});
 
-
 		// add histogram TextLabel
-		histogramText = new JLabel("What would you like the grayscale histogram to mean?");
+		histogramText = new JLabel(
+				"What would you like the grayscale histogram to mean?");
 		histogramText.setFont(new Font("Verdana", 1, 20));
 		histogramText.setAlignmentX(CENTER_ALIGNMENT);
 
 		// add color combobox selection
-		String[] histogramStrings = { "Scale", "Instrument", "Note Length" };
+		String[] histogramStrings = { "Scale", "Instrument", "Note Volume" };
 		histogramMeans = new JComboBox(histogramStrings);
 		histogramMeans.setSelectedIndex(0);
 		histogramMeans.setAlignmentX(CENTER_ALIGNMENT);
@@ -156,21 +157,34 @@ public class UIShell extends JPanel implements ActionListener {
 			}
 		});
 
-		//Execute Button
+		// Execute Button
 		executeButton = new JButton("Execute");
 		executeButton.setAlignmentX(CENTER_ALIGNMENT);
 		executeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				sg = new SoundGenerator();				
+				sg = new SoundGenerator();
+				String pictureSelected = imageList.getSelectedItem().toString();
+				String histogramMeansValue = histogramMeans.getSelectedItem().toString();
+				String sizeMeansValue = sizeMeans.getSelectedItem().toString();
+				String colorMeansValue = colorMeans.getSelectedItem().toString();
+				String traversalDirection = directionMeans.getSelectedItem().toString();
+				ArrayList<Shape> shapes = new ArrayList<Shape>();
+				ScanImage si = new ScanImage();
+				try {
+					shapes = si.scan(pictureSelected, traversalDirection);
+					System.out.println(shapes.size());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		// add all of the stuff to the window
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(imageList);
 		add(picture);
-		add(shapeText);
-		add(shapeMeans);
+		// add(shapeText);
+		// add(shapeMeans);
 		add(sizeText);
 		add(sizeMeans);
 		add(sizeText);

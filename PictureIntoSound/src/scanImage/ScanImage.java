@@ -1,19 +1,12 @@
 package scanImage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.io.File;
 import java.io.IOException;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 
 public class ScanImage{
 	static ArrayList<Shape> imageShapes = new ArrayList<Shape>();
@@ -21,18 +14,22 @@ public class ScanImage{
 	static Pixel startingPixel = new Pixel(0,0);
 	static String directionString = "Left-Right";
 	
-	public static void main (String args[]) throws IOException
+	public ArrayList<Shape> scan(String pictureSelected, String traversalDirection) throws IOException
 	{
 		int width;
 		int height;
 		BufferedImage image = null;
 		File f = null;
 		
+		
+		
+		
 		//read image file	
-		ImageIcon icon = new ImageIcon("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\images\\testPic2.jpg");
+		String pathToImage = "images/" + pictureSelected;
+		ImageIcon icon = new ImageIcon(pathToImage);
 		width = icon.getIconWidth();
 		height = icon.getIconHeight();
-		f = new File("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\images\\testPic2.jpg");
+		f = new File(pathToImage);
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		BufferedImage gray = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);//
 		Graphics g = image.getGraphics();//
@@ -47,23 +44,13 @@ public class ScanImage{
 		}
 		
 		//write image
-		try{
+/*		try{
 			f = new File("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\output2.jpg");
 			ImageIO.write(image, "jpg", f);
-			System.out.println("Writing complete.");
 		}catch(IOException e){
 			System.out.println("Error "+e);
 		}
-		
-		//display image
-		JFrame frame = new JFrame();
-		ImageIcon icon2 = new ImageIcon("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\output2.jpg");
-		JLabel label  = new JLabel(icon2);
-		frame.add(label);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
-	
+*/		
 		//begin scanning image
 		int[][] imageCheck = new int[height][width];
 		String[][] pixelColor = new String[height][width];
@@ -97,6 +84,7 @@ public class ScanImage{
 				}	
 			}
 		}
+		return imageShapes;
 	}
 	/*
 	 * initializes array used to verify each pixel gets checked
@@ -122,7 +110,7 @@ public class ScanImage{
 				  ColorList pixelColor = new ColorList();
 				  color[i][j] = pixelColor.getColorNameFromRgb(red, green, blue);
 			}
-		System.out.println(Arrays.toString(color[i]));	
+	//	System.out.println(Arrays.toString(color[i]));	
 		}
 	}
 	/*
