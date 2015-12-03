@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -20,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import scanImage.Histogram;
 import scanImage.ScanImage;
 import scanImage.Shape;
 import soundGenerator.SoundGenerator;
@@ -171,9 +171,12 @@ public class UIShell extends JPanel implements ActionListener {
 				String traversalDirection = directionMeans.getSelectedItem().toString();
 				ArrayList<Shape> shapes = new ArrayList<Shape>();
 				ScanImage si = new ScanImage();
+				
+			//	Histogram h = si.createHistogram();
+			//	int[] histo = h.getHistogram();
 				try {
 					shapes = si.scan(pictureSelected, traversalDirection);
-					sg.playSound(histogramMeansValue, sizeMeansValue, colorMeansValue, shapes);
+					sg.playSound(null, histogramMeansValue, sizeMeansValue, colorMeansValue, shapes);
 					//System.out.println(shapes.size());
 				} catch (IOException e1) {
 					e1.printStackTrace();

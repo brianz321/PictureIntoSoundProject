@@ -12,6 +12,8 @@ public class ScanImage{
 	static ArrayList<Shape> imageShapes = new ArrayList<Shape>();
 	static int shapeSize;
 	static Pixel startingPixel;
+	//static int[][] histogram = new int[1000][1000];
+	
 	
 	public ArrayList<Shape> scan(String pictureSelected, String traversalDirection) throws IOException
 	{
@@ -21,8 +23,6 @@ public class ScanImage{
 		int height;
 		BufferedImage image = null;
 		File f = null;
-		
-		
 		
 		
 		//read image file	
@@ -54,10 +54,12 @@ public class ScanImage{
 */		
 		//begin scanning image
 		int[][] imageCheck = new int[height][width];
+		int[][] histogram = new int[height][width];
 		int[][] histogramValues = new int[height][width];
 		String[][] pixelColor = new String[height][width];
 		initializeImageArray(imageCheck);
 		initializeColorArray(pixelColor, histogramValues, image);
+		Histogram hist = new Histogram(new int[256],histogramValues);
 		if(traversalDirection == "Left-Right"){
 			for(int i = 0; i < imageCheck.length; i++){//height, rows
 				for(int j = 0; j < imageCheck[0].length; j++){//width, columns
@@ -86,7 +88,6 @@ public class ScanImage{
 				}	
 			}
 		}
-		Histogram hist = createHistogram(histogramValues);
 		return imageShapes;
 	}
 	/*
@@ -103,7 +104,7 @@ public class ScanImage{
 	/*
 	 * loads array used to store String value of the color at each pixel
 	 */
-	static void initializeColorArray(String[][] color, int[][] histogram, BufferedImage image){
+	static void initializeColorArray(String[][] color, int[][] histogram1, BufferedImage image){
 		for(int i = 0; i < color.length; i++){//y, height, rows
 			for(int j = 0; j < color[0].length; j++){//x, width, columns
 				  int pixel = image.getRGB(j, i);	
@@ -112,11 +113,12 @@ public class ScanImage{
 				  int blue = (pixel) & 0xff;
 				  int colorTotal = (red + green + blue)/3;
 				  ColorList pixelColor = new ColorList();
-				  histogram[i][j] = colorTotal;
+				  histogram1[i][j] = colorTotal;
 				  color[i][j] = pixelColor.getColorNameFromRgb(red, green, blue);
 			}
 	//	System.out.println(Arrays.toString(color[i]));	
 		}
+		//histogram = histogram1;
 	}
 	/*
 	 * goes through pixel by pixel and groups together neighboring pixels that share the same color.
@@ -162,17 +164,6 @@ public class ScanImage{
 		}
 	}
 	
-	public Histogram createHistogram(int[][] histogram){
-		Histogram hist = new Histogram();
-		int[] histValues = new int[256];
-		for(int i = 0; i < histogram.length; i++){
-			for(int j = 0; j < histogram[0].length; j++){
-				histValues[histogram[i][j]]++;
-			}
-		}
-		hist.setHistogram(histValues);
-		return hist;
-	}
 	public static void convertOneToTwo(int[][] array, int x, int y){
 		for(int i = x; i < array.length; i++){
 			for(int j = y; j < array[0].length; j++){

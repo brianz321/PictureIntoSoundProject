@@ -18,7 +18,7 @@ public final class SoundGenerator implements JMC {
 	public SoundGenerator() {
 	}
 
-	public void playSound(String histogramMeansValue, String sizeMeansValue, String colorMeansValue, ArrayList<Shape> shapes) {
+	public void playSound(int[] histogram, String histogramMeansValue, String sizeMeansValue, String colorMeansValue, ArrayList<Shape> shapes) {
 		int[] scaleToUse = { 0, 1, 3, 7, 8 };
 		ArrayList<Double> rhythms = new ArrayList<Double>();
 		Part inst = new Part();
@@ -98,13 +98,22 @@ public final class SoundGenerator implements JMC {
 				
 		// create a middle C minim (half note)
 		Note n = new Note(C4, MINIM);
+		Note n1 = new Note(E4, MINIM);
+		Note n2 = new Note(G4, MINIM);
+		Note n3 = new Note(B4, MINIM);
+		
 
 		// create a phrase
 		Phrase phr = new Phrase();
 
 		// put the note inside the phrase
 		phr.addNote(n);
-
+		phr.addNote(n1);
+		phr.addNote(n2);
+		phr.addNote(n3);
+		phr.addNote(n);
+		phr.addNote(n2);
+		
 		// pack the phrase into a part
 		//Part p = new Part();
 		inst.addPhrase(phr);
