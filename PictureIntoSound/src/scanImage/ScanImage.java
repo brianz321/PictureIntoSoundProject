@@ -12,6 +12,8 @@ public class ScanImage{
 	static ArrayList<Shape> imageShapes = new ArrayList<Shape>();
 	static int shapeSize;
 	static Pixel startingPixel;
+	//static int[][] histogram = new int[1000][1000];
+	
 	
 	public ArrayList<Shape> scan(String pictureSelected, String traversalDirection) throws IOException
 	{
@@ -43,10 +45,12 @@ public class ScanImage{
 		
 		//begin scanning image
 		int[][] imageCheck = new int[height][width];
+		int[][] histogram = new int[height][width];
 		int[][] histogramValues = new int[height][width];
 		String[][] pixelColor = new String[height][width];
 		initializeImageArray(imageCheck);
 		initializeColorArray(pixelColor, histogramValues, image);
+		Histogram hist = new Histogram(new int[256],histogramValues);
 		if(traversalDirection == "Left-Right"){
 			for(int i = 0; i < imageCheck.length; i++){//height, rows
 				for(int j = 0; j < imageCheck[0].length; j++){//width, columns
@@ -92,7 +96,7 @@ public class ScanImage{
 	/*
 	 * loads array used to store String value of the color at each pixel
 	 */
-	static void initializeColorArray(String[][] color, int[][] histogram, BufferedImage image){
+	static void initializeColorArray(String[][] color, int[][] histogram1, BufferedImage image){
 		for(int i = 0; i < color.length; i++){//y, height, rows
 			for(int j = 0; j < color[0].length; j++){//x, width, columns
 				  int pixel = image.getRGB(j, i);	
@@ -101,6 +105,7 @@ public class ScanImage{
 				  int blue = (pixel) & 0xff;
 				  int colorTotal = (red + green + blue)/3;
 				  ColorList pixelColor = new ColorList();
+				  histogram1[i][j] = colorTotal;
 				  histogram[i][j] = colorTotal;
 				  color[i][j] = pixelColor.getColorNameFromRgb(red, green, blue);
 			}
