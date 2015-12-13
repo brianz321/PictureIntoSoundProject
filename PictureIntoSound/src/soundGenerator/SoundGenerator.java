@@ -20,6 +20,7 @@ public final class SoundGenerator implements JMC {
 
 	public void playSound(int[] histogram, String histogramMeansValue, String sizeMeansValue, String colorMeansValue, ArrayList<Shape> shapes) {
 		int[] scaleToUse = { 0, 1, 3, 7, 8 };
+		ArrayList<Integer> pitchesToUse = getPitches();
 		ArrayList<Double> rhythms = new ArrayList<Double>();
 		Part inst = new Part();
 		double[] rhythmArray; 
@@ -97,6 +98,15 @@ public final class SoundGenerator implements JMC {
 		//"Scale"
 				
 		// create a middle C minim (half note)
+		ArrayList<Note> notes = new ArrayList<Note>();
+	
+		for(int r = 0; r<shapes.size(); r++){
+			
+			
+			
+			//notes.add()
+		}
+		
 		Note n = new Note(C4, MINIM);
 		Note n1 = new Note(E4, MINIM);
 		Note n2 = new Note(G4, MINIM);
@@ -264,7 +274,7 @@ public final class SoundGenerator implements JMC {
 		return selectedScale;
 	}
 
-	public void getPitches() {
+	public ArrayList<Integer> getPitches() {
 	
 
 		int[] scaleToUse = getScale(83);
@@ -288,10 +298,27 @@ public final class SoundGenerator implements JMC {
 			}
 		}
 		System.out.println(useThisPitchArray.toString());
+		 
+		ArrayList<Integer> useThisPitchArrayInt = new ArrayList<Integer>();
+		for(int h = 0; h<useThisPitchArray.size(); h++){
+		try {
+			Field inNum = jm.constants.ProgramChanges.class
+					.getDeclaredField(useThisPitchArray.get(h));
+			useThisPitchArrayInt.add(inNum.getInt(null));
 
+		} catch (NoSuchFieldException | SecurityException
+				| IllegalArgumentException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+		return useThisPitchArrayInt;
+		
 		// SHAPE
 
 		// SIZE
+		
+		
 	}
 
 	public void getNumberOfNotes() {
