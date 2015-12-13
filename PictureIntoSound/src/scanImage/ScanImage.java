@@ -84,6 +84,10 @@ public class ScanImage{
 		}
 		//Histogram hist1 = createHistogram(histogramValues);
 		fscsSize(imageShapes);
+		System.out.println(imageShapes.size());
+		for(int i = 0; i<imageShapes.size(); i++){
+			System.out.println(imageShapes.get(i).getSize());
+		}
 		return imageShapes;
 	}
 	/*
@@ -181,7 +185,7 @@ public class ScanImage{
 	}
 	public static void fscsSize(ArrayList<Shape> shapes){
 		int max = getMax(shapes);
-		double scale = 100/max;
+		double scale = (double)100/max;
 		for(int i=0; i<shapes.size(); i++){
 	        shapes.get(i).setSize((int) Math.round(shapes.get(i).getSize()*scale));
 	    }

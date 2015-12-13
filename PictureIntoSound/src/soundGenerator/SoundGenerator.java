@@ -275,8 +275,8 @@ public final class SoundGenerator implements JMC {
 
 		Part inst = new Part(musicalInstruments.get(instrumentInt),
 				selectedInstrument, 0);
-		System.out.println(musicalInstruments.get(instrumentInt) + " : "
-				+ selectedInstrument);
+		//System.out.println(musicalInstruments.get(instrumentInt) + " : "
+		//		+ selectedInstrument);
 		return inst;
 	}
 
@@ -314,8 +314,8 @@ public final class SoundGenerator implements JMC {
 			e.printStackTrace();
 		}
 
-		System.out.println(scales.get(scaleInt) + " "
-				+ Arrays.toString(selectedScale));
+		//System.out.println(scales.get(scaleInt) + " "
+		//		+ Arrays.toString(selectedScale));
 		return selectedScale;
 	}
 
@@ -342,7 +342,7 @@ public final class SoundGenerator implements JMC {
 				}
 			}
 		}
-		System.out.println(useThisPitchArray.toString());
+		//System.out.println(useThisPitchArray.toString());
 		 
 		ArrayList<Integer> useThisPitchArrayInt = new ArrayList<Integer>();
 		for(int h = 0; h<useThisPitchArray.size(); h++){
