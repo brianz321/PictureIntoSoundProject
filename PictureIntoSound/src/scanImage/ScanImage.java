@@ -20,10 +20,7 @@ public class ScanImage{
 		int width;
 		int height;
 		BufferedImage image = null;
-		File f = null;
-		
-		
-		
+		File f = null;	
 		
 		//read image file	
 		String pathToImage = "images/" + pictureSelected;
@@ -40,18 +37,10 @@ public class ScanImage{
 		try{	
 			image = ImageIO.read(f);
 			System.out.println("Reading complete.");	
-		}catch(IOException e){
+		}catch(IOException e){	
 			System.out.println("Error: "+e);
 		}
 		
-		//write image
-/*		try{
-			f = new File("C:\\Users\\Brian\\Documents\\School\\EE 371R\\PictureIntoSoundProject\\output2.jpg");
-			ImageIO.write(image, "jpg", f);
-		}catch(IOException e){
-			System.out.println("Error "+e);
-		}
-*/		
 		//begin scanning image
 		int[][] imageCheck = new int[height][width];
 		int[][] histogramValues = new int[height][width];
