@@ -82,12 +82,7 @@ public class ScanImage{
 				}	
 			}
 		}
-		//Histogram hist1 = createHistogram(histogramValues);
 		fscsSize(imageShapes);
-		System.out.println(imageShapes.size());
-		for(int i = 0; i<imageShapes.size(); i++){
-			System.out.println(imageShapes.get(i).getSize());
-		}
 		return imageShapes;
 	}
 	/*
@@ -97,8 +92,7 @@ public class ScanImage{
 		for(int i = 0; i < array.length; i++){//y, height, rows
 			for(int j = 0; j < array[0].length; j++){//x, width, columns
 				array[i][j] = 0;
-			}
-		//System.out.println(Arrays.toString(array[i]));	
+			}	
 		}
 	}
 	/*
@@ -116,7 +110,6 @@ public class ScanImage{
 				  histogram1[i][j] = colorTotal;
 				  color[i][j] = pixelColor.getColorNameFromRgb(red, green, blue);
 			}
-	//	System.out.println(Arrays.toString(color[i]));	
 		}
 	}
 	/*
