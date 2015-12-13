@@ -347,7 +347,7 @@ public final class SoundGenerator implements JMC {
 		ArrayList<Integer> useThisPitchArrayInt = new ArrayList<Integer>();
 		for(int h = 0; h<useThisPitchArray.size(); h++){
 		try {
-			Field inNum = jm.constants.ProgramChanges.class
+			Field inNum = jm.constants.Pitches.class
 					.getDeclaredField(useThisPitchArray.get(h));
 			useThisPitchArrayInt.add(inNum.getInt(null));
 
