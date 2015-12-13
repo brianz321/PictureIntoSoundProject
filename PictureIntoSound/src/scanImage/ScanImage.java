@@ -106,7 +106,6 @@ public class ScanImage{
 				  int colorTotal = (red + green + blue)/3;
 				  ColorList pixelColor = new ColorList();
 				  histogram1[i][j] = colorTotal;
-				  histogram[i][j] = colorTotal;
 				  color[i][j] = pixelColor.getColorNameFromRgb(red, green, blue);
 			}
 	//	System.out.println(Arrays.toString(color[i]));	
