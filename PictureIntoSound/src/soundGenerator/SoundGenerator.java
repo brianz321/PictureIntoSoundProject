@@ -102,60 +102,60 @@ public final class SoundGenerator implements JMC {
 		ArrayList<Note> notes = new ArrayList<Note>();
 	
 		for(int r = 0; r<shapes.size(); r++){
-			
-			
+			System.out.println("size val: "+shapes.get(r).getSize());
+			System.out.println("divided val: "+(shapes.get(r).getSize()*2)/100);
 			switch(shapes.get(r).getColor()){
-			case "Black": notes.add(new Note( pitchesToUse.get(1%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case "Black": notes.add(new Note( pitchesToUse.get(1%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "Blue": notes.add(new Note( pitchesToUse.get(2%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "Blue": notes.add(new Note( pitchesToUse.get(2%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "Brown": notes.add(new Note( pitchesToUse.get(3%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "Brown": notes.add(new Note( pitchesToUse.get(3%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "Cyan": notes.add(new Note( pitchesToUse.get(4%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "Cyan": notes.add(new Note( pitchesToUse.get(4%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "DarkBlue": notes.add(new Note( pitchesToUse.get(5%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "DarkBlue": notes.add(new Note( pitchesToUse.get(5%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "DarkGreen": notes.add(new Note( pitchesToUse.get(6%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "DarkGreen": notes.add(new Note( pitchesToUse.get(6%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "DarkOrange": notes.add(new Note( pitchesToUse.get(7%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "DarkOrange": notes.add(new Note( pitchesToUse.get(7%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "DarkRed": notes.add(new Note( pitchesToUse.get(8%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "DarkRed": notes.add(new Note( pitchesToUse.get(8%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "DarkViolet":  notes.add(new Note( pitchesToUse.get(9%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "DarkViolet":  notes.add(new Note( pitchesToUse.get(9%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "Gray": notes.add(new Note( pitchesToUse.get(10%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "Gray": notes.add(new Note( pitchesToUse.get(10%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case  "Green":  notes.add(new Note( pitchesToUse.get(11%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case  "Green":  notes.add(new Note( pitchesToUse.get(11%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "Khaki":  notes.add(new Note( pitchesToUse.get(12%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "Khaki":  notes.add(new Note( pitchesToUse.get(12%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "LightBlue":  notes.add(new Note( pitchesToUse.get(13%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "LightBlue":  notes.add(new Note( pitchesToUse.get(13%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "LightGreen":  notes.add(new Note( pitchesToUse.get(14%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "LightGreen":  notes.add(new Note( pitchesToUse.get(14%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case  "LightYellow":  notes.add(new Note( pitchesToUse.get(15%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case  "LightYellow":  notes.add(new Note( pitchesToUse.get(15%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case  "Magenta":  notes.add(new Note( pitchesToUse.get(16%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case  "Magenta":  notes.add(new Note( pitchesToUse.get(16%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "Orange":  notes.add(new Note( pitchesToUse.get(17%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "Orange":  notes.add(new Note( pitchesToUse.get(17%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "Pink":  notes.add(new Note( pitchesToUse.get(18%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "Pink":  notes.add(new Note( pitchesToUse.get(18%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "Purple":  notes.add(new Note( pitchesToUse.get(19%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "Purple":  notes.add(new Note( pitchesToUse.get(19%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "Red":  notes.add(new Note( pitchesToUse.get(20%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "Red":  notes.add(new Note( pitchesToUse.get(20%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "Salmon":  notes.add(new Note( pitchesToUse.get(21%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "Salmon":  notes.add(new Note( pitchesToUse.get(21%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "Turquoise":  notes.add(new Note( pitchesToUse.get(22%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "Turquoise":  notes.add(new Note( pitchesToUse.get(22%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "Violet":  notes.add(new Note( pitchesToUse.get(23%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "Violet":  notes.add(new Note( pitchesToUse.get(23%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "White":  notes.add(new Note( pitchesToUse.get(24%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "White":  notes.add(new Note( pitchesToUse.get(24%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			case   "Yellow":  notes.add(new Note( pitchesToUse.get(25%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			case   "Yellow":  notes.add(new Note( pitchesToUse.get(25%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
-			default:  notes.add(new Note( pitchesToUse.get(1%pitchesToUse.size()), ((shapes.get(r).getSize()/2)*100)));
+			default:  notes.add(new Note( pitchesToUse.get(1%pitchesToUse.size()), ((shapes.get(r).getSize()*2)/100)));
 				break;
 			}
 		}
