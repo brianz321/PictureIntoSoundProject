@@ -8,7 +8,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -47,8 +49,8 @@ public class UIShell extends JPanel implements ActionListener {
 
 		// add combobox for image selection
 		String[] ImageStrings = { "geocolorpage.jpg", "geofab.jpg",
-				"georetropattern.jpg", "squaretrianglecircle.jpg"
-				"stainedGlass.jpg", "abstract-background.jpg","colorful diamonds.jpg", 
+				"georetropattern.jpg", 
+				 "abstract-background.jpg","colorful diamonds.jpg", 
 				"geometric-silk-scarf-7.jpg", "Geometric-Voices-Number-79.jpg", "tumblr_1280.jpg"};
 		imageList = new JComboBox(ImageStrings);
 		imageList.setSelectedIndex(0);
@@ -205,7 +207,7 @@ public class UIShell extends JPanel implements ActionListener {
 	}
 
 	protected void updateLabel(String name) {
-		String pathToImage = "images/" + name;
+		URL pathToImage = getClass().getResource("/" + name);
 		ImageIcon icon = createImageIcon(pathToImage);
 		picture.setIcon(icon);
 		picture.setToolTipText(name.toLowerCase());
@@ -217,7 +219,7 @@ public class UIShell extends JPanel implements ActionListener {
 	}
 
 	/* Returns an ImageIcon, or null if the path was invalid. */
-	protected static ImageIcon createImageIcon(String path) {
+	protected static ImageIcon createImageIcon(URL path) {
 		if (path != null) {
 			return new ImageIcon(path);
 		} else {

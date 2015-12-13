@@ -104,7 +104,7 @@ public final class SoundGenerator implements JMC {
 		for(int r = 0; r<shapes.size(); r++){
 			System.out.println("size val: "+shapes.get(r).getSize());
 			System.out.println("divided val: "+(double)(shapes.get(r).getSize()*2)/100);
-			if(shapes.get(r).getSize()== 0){
+			if(shapes.get(r).getSize()< 5){
 				continue;
 			}
 			switch(shapes.get(r).getColor()){
