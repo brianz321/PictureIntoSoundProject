@@ -47,8 +47,8 @@ public class UIShell extends JPanel implements ActionListener {
 
 		// add combobox for image selection
 		String[] ImageStrings = { "geocolorpage.jpg", "geofab.jpg",
-				"georetropattern.jpg", "SimilarGeometricShapes.png",
-				"stainedGlass.jpg" };
+				"georetropattern.jpg", "squaretrianglecircle.jpg"
+				 };
 		imageList = new JComboBox(ImageStrings);
 		imageList.setSelectedIndex(0);
 		imageList.setAlignmentX(CENTER_ALIGNMENT);
