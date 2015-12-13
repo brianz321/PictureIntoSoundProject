@@ -1,10 +1,12 @@
 package scanImage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.io.File;
 import java.io.IOException;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -51,6 +53,7 @@ public class ScanImage{
 		initializeImageArray(imageCheck);
 		initializeColorArray(pixelColor, histogramValues, image);
 		Histogram hist = new Histogram(new int[256],histogramValues);
+		imageShapes.clear();
 		if(traversalDirection == "Left-Right"){
 			for(int i = 0; i < imageCheck.length; i++){//height, rows
 				for(int j = 0; j < imageCheck[0].length; j++){//width, columns
@@ -79,7 +82,8 @@ public class ScanImage{
 				}	
 			}
 		}
-		Histogram hist = createHistogram(histogramValues);
+		//Histogram hist1 = createHistogram(histogramValues);
+		fscsSize(imageShapes);
 		return imageShapes;
 	}
 	/*
@@ -174,5 +178,21 @@ public class ScanImage{
 				}
 			}
 		}
+	}
+	public static void fscsSize(ArrayList<Shape> shapes){
+		int max = getMax(shapes);
+		double scale = 100/max;
+		for(int i=0; i<shapes.size(); i++){
+	        shapes.get(i).setSize((int) Math.round(shapes.get(i).getSize()*scale));
+	    }
+	}
+	public static int getMax(ArrayList<Shape> list){
+	    int max = Integer.MIN_VALUE;
+	    for(int i=0; i<list.size(); i++){
+	        if(list.get(i).getSize() > max){
+	            max = list.get(i).getSize();
+	        }
+	    }
+	    return max;
 	}
 }
